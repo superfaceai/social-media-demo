@@ -1,0 +1,66 @@
+// Instagram Graph API Reference: https://developers.facebook.com/docs/instagram-api
+
+profile = "social-media/get-pages@1.0"
+provider = "instagram"
+
+map GetPages {
+  http GET "/v12.0/me/accounts" {
+
+    request {
+      query {
+          access_token = input.accessToken
+      }
+    }
+
+    response 200 "application/json" {
+      pages = call foreach(page of body.data) MapPage(page = page)
+
+      return map result {
+        pages = pages
+      }
+    }
+
+    response 400 "application/json" {
+      return map error {
+        title = "Bad request"
+        detail = body.error.message
+      }
+    }
+
+    response 401 "application/json" {
+      return map error {
+        title = "Unauthenticated"
+        detail = body.error.message
+      }
+    }
+
+    response 403 "application/json" {
+      return map error {
+        title = "Forbidden"
+        detail = body.error.message
+      }
+    }
+  }
+}
+
+operation MapPage {
+   http GET "/v12.0/{args.page.id}" {
+
+    request {
+      query {
+        fields='instagram_business_account',
+        access_token=input.accessToken
+      }
+    }
+
+    response 200 "application/json" {
+      businessAccountId =  body.instagram_business_account.id
+    }
+  }
+
+  return {
+    id = args.page.id
+    name = args.page.name
+    businessAccountId = businessAccountId
+  }
+}

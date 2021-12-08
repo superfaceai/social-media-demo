@@ -1,0 +1,10 @@
+{
+  "name": "facebook",
+  "services": [
+    {
+      "id": "default",
+      "baseUrl": "https://graph.facebook.com"
+    }
+  ],
+  "defaultService": "default"
+}

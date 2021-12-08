@@ -1,0 +1,34 @@
+{
+  "profiles": {
+    "social-media/publish-post": {
+      "file": "../src/sf/grid/social-media/publish-post.supr",
+      "providers": {
+        "instagram": {
+          "file": "../src/sf/grid/social-media/publish-post.instagram.suma"
+        },
+        "facebook": {
+          "file": "../src/sf/grid/social-media/publish-post.facebook.suma"
+        }
+      }
+    },
+    "social-media/get-pages": {
+      "file": "../src/sf/grid/social-media/get-pages.supr",
+      "providers": {
+        "instagram": {
+          "file": "../src/sf/grid/social-media/get-pages.instagram.suma"
+        },
+        "facebook": {
+          "file": "../src/sf/grid/social-media/get-pages.facebook.suma"
+        }
+      }
+    }
+  },
+  "providers": {
+    "instagram": {
+      "file": "../src/sf/providers/instagram.json"
+    },
+    "facebook": {
+      "file": "../src/sf/providers/facebook.json"
+    }
+  }
+}

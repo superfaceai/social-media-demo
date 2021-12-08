@@ -1,0 +1,26 @@
+<p>Publishing as: <%= user.displayName %></p>
+<% if (success === true) { %>
+<p>Publish succeded</p>
+<p>Published post id: <%=postId%></p>
+<% } else if (success === false){ %>
+<p>Publish failed: <%= error.title%>, <%= error.detail%></p>
+<% } else {%>
+<form method="post" action="/publish-post">
+  <p>
+    Select social media provider:
+    <select name="provider" id="provider">
+      <option value="facebook">Facebook</option>
+      <option value="instagram">Instagram</option>
+    </select>
+  </p>
+  <p>
+    Post message:
+    <input type="text" style="width:300px" name="post-message" id="post-message"> </input>
+  </p>
+  <p>
+    Post image url:
+    <input type="text"  style="width:300px"  name="post-image-url" id="post-image-url"> </input>
+  </p>
+  <p><button>Publish</button></p>
+</form>
+<% }%>
