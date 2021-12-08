@@ -1,4 +1,4 @@
-// Instagram Graph API Reference: https://developers.facebook.com/docs/instagram-api
+// Facebook Graph API Reference: https://developers.facebook.com/docs/graph-api/
 
 profile = "social-media/get-pages@1.0"
 provider = "facebook"
