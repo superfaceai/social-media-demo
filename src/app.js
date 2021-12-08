@@ -14,7 +14,7 @@ const buildFacebookStrategy = require('./auth/facebook/auth');
 //   serialize users into and deserialize users out of the session.  Typically,
 //   this will be as simple as storing the user ID when serializing, and finding
 //   the user by ID when deserializing.  However, since this example does not
-//   have a database of user records, the complete Instagram profile is
+//   have a database of user records, the complete Facebook profile is
 //   serialized and deserialized.
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -24,7 +24,7 @@ passport.deserializeUser(function (obj, done) {
   done(null, obj);
 });
 
-// Use the Twitter within Passport.
+// Use the Facebook within Passport.
 passport.use(buildFacebookStrategy());
 
 var app = express();
