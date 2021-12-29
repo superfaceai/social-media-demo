@@ -29,6 +29,9 @@
     },
     "facebook": {
       "file": "../src/sf/providers/facebook.json"
+    },
+    "twitter": {
+      "file": "../src/sf/providers/twitter.json"
     }
   }
 }

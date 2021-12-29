@@ -1,0 +1,10 @@
+{
+  "name": "twitter",
+  "services": [
+    {
+      "id": "default",
+      "baseUrl": "https://api.twitter.com"
+    }
+  ],
+  "defaultService": "default"
+}
