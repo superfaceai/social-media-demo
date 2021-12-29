@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const expressLayouts = require('express-ejs-layouts');
 const buildFacebookStrategy = require('./auth/facebook/auth');
+const buildTwitterStrategy = require('./auth/twitter/auth');
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -26,6 +27,9 @@ passport.deserializeUser(function (obj, done) {
 
 // Use the Facebook within Passport.
 passport.use(buildFacebookStrategy());
+
+//Use the Twitter OAuth2 strategy within Passport.
+passport.use(buildTwitterStrategy());
 
 var app = express();
 
@@ -98,6 +102,32 @@ app.get(
 app.get(
   '/auth/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function (req, res) {
+    res.redirect('/');
+  }
+);
+
+//TWITTER
+
+app.get(
+  '/auth/twitter',
+  passport.authenticate('twitter', {
+    scope: ['tweet.read', 'tweet.write', 'users.read'],
+  }),
+  function (req, res) {
+    // The request will be redirected to Twitter for authentication, so this
+    // function will not be called.
+  }
+);
+
+// GET /auth/twitter/callback
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  If authentication fails, the user will be redirected back to the
+//   login page.  Otherwise, the primary route function function will be called,
+//   which, in this example, will redirect the user to the home page.
+app.get(
+  '/auth/twitter/callback',
+  passport.authenticate('twitter', { failureRedirect: '/login' }),
   function (req, res) {
     res.redirect('/');
   }

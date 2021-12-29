@@ -32,7 +32,21 @@ async function getPages(providerName, accessToken) {
   return result.unwrap();
 }
 
-function getFeed(providerName, page) {
+async function getFeed(providerName, accessToken) {
+  if (providerName === 'twitter') {
+    //twitter has single feed which is identified by account id
+    return null;
+  }
+
+  const { pages } = await getPages(providerName, accessToken);
+
+  if (!pages.length) {
+    throw Error('User account has no pages connected');
+  }
+
+  //In this example we post to first page
+  const page = pages[0];
+
   let feed;
   if (providerName === 'facebook') {
     feed = {
@@ -47,25 +61,34 @@ function getFeed(providerName, page) {
   return feed;
 }
 
+function getAccessTokenByProviderName(providerName, req) {
+  switch (providerName) {
+    case 'facebook':
+    case 'instagram':
+      return req.user.facebook?.accessToken;
+    case 'twitter':
+      return req.user.twitter?.accessToken;
+  }
+}
+
 module.exports = async function (req, res) {
   try {
     const providerName = req.body.provider;
 
-    const { pages } = await getPages(providerName, req.user.accessToken);
+    let accessToken = getAccessTokenByProviderName(providerName, req);
 
-    if (!pages.length) {
+    if (!accessToken) {
       res.render('publish-post', {
         user: req.user,
         success: false,
         error: {
-          title: 'User account has no pages connected',
+          title: 'User not logged in for selected provider',
         },
       });
       return;
     }
 
-    //In this example we publish post to the first page
-    let feed = getFeed(providerName, pages[0]);
+    let feed = getFeed(providerName, accessToken);
 
     const result = await publish(
       providerName,
@@ -74,7 +97,7 @@ module.exports = async function (req, res) {
         text: req.body['post-message'],
         imageUrl: req.body['post-image-url'],
       },
-      req.user.accessToken
+      accessToken
     );
 
     res.render('publish-post', {

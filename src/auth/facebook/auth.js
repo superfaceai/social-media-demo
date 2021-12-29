@@ -14,7 +14,10 @@ module.exports = function () {
         // represent the logged-in user.  In a typical application, you would want
         // to associate the Facebook account with a user record in your database,
         // and return that user instead.
-        return done(null, { ...profile, accessToken, refreshToken });
+        return done(null, {
+          displayName: profile.displayName,
+          facebook: { profile, accessToken, refreshToken },
+        });
       });
     }
   );
