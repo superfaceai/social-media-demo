@@ -8,6 +8,9 @@
         },
         "facebook": {
           "file": "../src/sf/grid/social-media/publish-post.facebook.suma"
+        },
+        "twitter": {
+          "file": "../src/sf/grid/social-media/publish-post.twitter.suma"
         }
       }
     },
