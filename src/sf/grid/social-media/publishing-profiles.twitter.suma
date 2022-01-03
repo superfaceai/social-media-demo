@@ -1,0 +1,7 @@
+profile = "social-media/publishing-profiles@1.0"
+provider = "twitter"
+
+"""
+Profiles map
+"""
+map GetProfilesForPublishing {}

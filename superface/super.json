@@ -24,6 +24,20 @@
           "file": "../src/sf/grid/social-media/get-pages.facebook.suma"
         }
       }
+    },
+    "social-media/publishing-profiles": {
+      "file": "../src/sf/grid/social-media/publishing-profiles.supr",
+      "providers": {
+        "facebook": {
+          "file": "../src/sf/grid/social-media/publishing-profiles.facebook.suma"
+        },
+        "instagram": {
+          "file": "../src/sf/grid/social-media/publishing-profiles.instagram.suma"
+        },
+        "twitter": {
+          "file": "../src/sf/grid/social-media/publishing-profiles.twitter.suma"
+        }
+      }
     }
   },
   "providers": {
