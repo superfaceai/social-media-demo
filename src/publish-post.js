@@ -88,7 +88,7 @@ module.exports = async function (req, res) {
       return;
     }
 
-    let feed = getFeed(providerName, accessToken);
+    let feed = await getFeed(providerName, accessToken);
 
     const result = await publish(
       providerName,
