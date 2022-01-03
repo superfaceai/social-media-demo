@@ -26,10 +26,14 @@ passport.deserializeUser(function (obj, done) {
 });
 
 // Use the Facebook within Passport.
-passport.use(buildFacebookStrategy());
+if (process.env.FACEBOOK_CLIENT_ID) {
+  passport.use(buildFacebookStrategy());
+}
 
 //Use the Twitter OAuth2 strategy within Passport.
-passport.use(buildTwitterStrategy());
+if (process.env.TWITTER_CLIENT_ID) {
+  passport.use(buildTwitterStrategy());
+}
 
 var app = express();
 
@@ -108,7 +112,6 @@ app.get(
 );
 
 //TWITTER
-
 app.get(
   '/auth/twitter',
   passport.authenticate('twitter', {
