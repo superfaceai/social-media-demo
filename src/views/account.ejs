@@ -1,3 +1,23 @@
-<p>ID: <%= user.id %></p>
-<p>Username: <%= user.username %></p>
-<p>Name: <%= user.displayName %></p>
+<div>
+  <h3>Facebook</h3>
+  <% if(user.facebook) { %>
+  <p>ID: <%= user.facebook.profile.id %></p>
+  <p>Username: <%= user.facebook.profile.username %></p>
+  <p>Name: <%= user.facebook.profile.displayName %></p>
+  <% } else { %>
+  <p>User is not logged in using Facebook account.</p>
+  <% } %>
+  <a href="/auth/facebook">Login with Facebook</a><br />
+</div>
+
+<div>
+  <h3>Twitter</h3>
+  <% if(user.twitter) { %>
+  <p>ID: <%= user.twitter.profile.id %></p>
+  <p>Username: <%= user.twitter.profile.username %></p>
+  <p>Name: <%= user.twitter.profile.displayName %></p>
+  <% } else { %>
+  <p>User is not logged in using Twitter account.</p>
+  <a href="/auth/twitter">Login with Twitter</a><br />
+  <% } %>
+</div>
