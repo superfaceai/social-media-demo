@@ -35,7 +35,7 @@ async function getPages(providerName, accessToken) {
 async function getFeed(providerName, accessToken) {
   if (providerName === 'twitter') {
     //twitter has single feed which is identified by account id
-    return null;
+    return undefined;
   }
 
   const { pages } = await getPages(providerName, accessToken);
