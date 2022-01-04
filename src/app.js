@@ -10,19 +10,10 @@ const expressLayouts = require('express-ejs-layouts');
 const buildFacebookStrategy = require('./auth/facebook/auth');
 const buildTwitterStrategy = require('./auth/twitter/auth');
 const { getProfilesForPublishing } = require('./sf/use-cases');
-const { getAccessTokenByProviderName } = require('./utils');
-
-// Simple route middleware to ensure user is authenticated.
-//   Use this route middleware on any resource that needs to be protected.  If
-//   the request is authenticated (typically via a persistent login session),
-//   the request will proceed.  Otherwise, the user will be redirected to the
-//   login page.
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
-}
+const {
+  getAccessTokenByProviderName,
+  ensureAuthenticated,
+} = require('./utils');
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
