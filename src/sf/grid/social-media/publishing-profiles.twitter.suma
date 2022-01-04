@@ -11,6 +11,9 @@ map GetProfilesForPublishing {
       query {
         "user.fields" = "id,name,profile_image_url,username"
       }
+      headers {
+        authorization = "Bearer " + parameters.accessToken
+      }
     }
 
     response 200 "application/json" {
