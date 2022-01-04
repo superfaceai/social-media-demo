@@ -6,35 +6,38 @@
 </nav>
 
 <main>
+  <h1>Publish to <%= providerName %></h1>
 
-<h1>Publish to <%= providerName %></h1>
-
-<p>Publishing as: <%= user.displayName %></p>
-<% if (success === true) { %>
-<p>Publish succeded</p>
-<p>Published post id: <%=postId%></p>
-<% } else if (success === false){ %>
-<p>Publish failed: <%= error.title%>, <%= error.detail%></p>
-<% } else {%>
-<form method="post" action="/publish-post">
-  <p>
-    Select profile:
-    <select name="profile" id="profile">
-      <% for(const profile of profiles) { %>
+  <p>Publishing as: <%= user.displayName %></p>
+  <% if (success === true) { %>
+  <p>Publish succeded</p>
+  <p>Published post id: <%=postId%></p>
+  <% } else if (success === false){ %>
+  <p>Publish failed: <%= error.title%>, <%= error.detail%></p>
+  <% } else {%>
+  <form method="post" action="/publish-post">
+    <p>
+      Select profile:
+      <select name="profileId" id="profileId">
+        <% for(const profile of profiles) { %>
         <option value="<%= profile.id %>"><%= profile.name %></option>
-      <% } %>
-    </select>
-  </p>
-  <p>
-    Post message:
-    <input type="text" style="width:300px" name="post-message" id="post-message"> </input>
-  </p>
-  <p>
-    Post image url:
-    <input type="text"  style="width:300px"  name="post-image-url" id="post-image-url"> </input>
-  </p>
-  <p><button>Publish</button></p>
-</form>
-<% }%>
-
+        <% } %>
+      </select>
+    </p>
+    <p>
+      Post message:<br />
+      <textarea name="text" id="text" cols="40" rows="5"></textarea>
+    </p>
+    <p>
+      Post link:
+      <input type="url" style="width: 300px" name="link" id="link" />
+    </p>
+    <p>
+      Post image URL:
+      <input type="url" style="width: 300px" name="mediaUrl" id="mediaUrl" />
+    </p>
+    <input type="hidden" name="providerName" value="<%= providerName %>" />
+    <p><button>Publish</button></p>
+  </form>
+  <% }%>
 </main>

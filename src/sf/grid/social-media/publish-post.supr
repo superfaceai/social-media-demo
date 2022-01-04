@@ -8,21 +8,15 @@ version = "1.0.0"
 
 """
 Publish a Post
-Publish a Post on social media.
+Publish post on social media profile.
 """
 usecase PublishPost unsafe {
   input {
     """
-    Access token
-    User access token.
+    Profile ID
+    Identification of profile to publish to; may be optional with some providers
     """
-    accessToken string!
-    
-    """
-    Feed ID
-    ID of the feed to publish post in
-    """
-    feed FacebookFeedId | InstagramFeedId
+    profileId string!
 
     """
     Text
@@ -31,10 +25,18 @@ usecase PublishPost unsafe {
     text string!
 
     """
-    Image url
-    Url of an image to be published in the post
+    Link
+    URL to attach to the post
     """
-    imageUrl string!
+    link string!
+
+    """
+    Media attachments
+    Only images and gifs are supported
+    """
+    media [
+      MediaWithContents | MediaWithUrl
+    ]
   }
 
   result {
@@ -43,7 +45,13 @@ usecase PublishPost unsafe {
     Post ID
     Identifier of the post that was published
     """
-    postId
+    postId string
+
+    """
+    Post URL
+    Link to the published post
+    """
+    url string
   }
 
   error {
@@ -88,24 +96,12 @@ usecase PublishPost unsafe {
   }
 }
 
-model FacebookFeedId {
-  """
-  Page ID
-  The page ID to publish post on
-  """
-  pageId string!
-
-  """
-  Gropup ID
-  The group ID to publish post on
-  """
-  groupId string!
+model MediaWithUrl {
+  url! string!
+  altText string
 }
 
-model InstagramFeedId {
-  """
-  Business account ID
-  The ID of Instagram business account linked with Facebook account.
-  """
-  businessAccountId! string!
+model MediaWithContents {
+  contents!
+  altText string
 }

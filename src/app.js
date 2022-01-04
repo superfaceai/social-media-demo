@@ -106,6 +106,7 @@ app.get(
     scope: [
       //Facebook scopes required to publish posts and list pages
       'pages_show_list',
+      'pages_read_engagement',
       'pages_manage_posts',
       //Instagram scopes required to publish posts
       'instagram_basic',

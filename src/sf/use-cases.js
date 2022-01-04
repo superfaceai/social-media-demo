@@ -21,6 +21,19 @@ async function getProfilesForPublishing(providerName, accessToken) {
   return result.unwrap()?.profiles;
 }
 
+async function publishPost(providerName, input, accessToken) {
+  const profile = await sdk.getProfile('social-media/publish-post');
+
+  const provider = await sdk.getProvider(providerName);
+
+  const result = await profile
+    .getUseCase('PublishPost')
+    .perform(input, { provider, parameters: { accessToken } });
+
+  return result.unwrap();
+}
+
 module.exports = {
   getProfilesForPublishing,
+  publishPost,
 };

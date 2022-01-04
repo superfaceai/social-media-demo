@@ -5,7 +5,7 @@ version = "1.0.0"
 Get Profiles for Publishing
 Relevant social-media profiles (pages, accounts) user is authorized to publish to.
 """
-usecase GetProfilesForPublishing {
+usecase GetProfilesForPublishing safe {
   result {
     profiles [
       {
