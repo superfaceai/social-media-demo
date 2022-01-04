@@ -6,8 +6,6 @@ Get Profiles for Publishing
 Relevant social-media profiles (pages, accounts) user is authorized to publish to.
 """
 usecase GetProfilesForPublishing {
-  input {}
-
   result {
     profiles [
       {
