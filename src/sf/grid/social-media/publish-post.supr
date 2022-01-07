@@ -35,7 +35,7 @@ usecase PublishPost unsafe {
     Only images and gifs are supported
     """
     media [
-      MediaWithContents | MediaWithUrl
+      MediaItem
     ]
   }
 
@@ -96,12 +96,19 @@ usecase PublishPost unsafe {
   }
 }
 
-model MediaWithUrl {
-  url! string!
+model MediaItem {
+  """
+  URL of image
+  Will be fetched by provider, must be accessible publicly. 
+  If both `contents` and `url` fields are provided, a preferable option will be picked by the map.
+  """
+  url string!
+  """
+  Buffer or base64 encoded string with image
+  If both `contents` and `url` fields are provided, a preferable option will be picked by the map.
+  """
+  contents
+  "Alternative text for screen readers"
   altText string
 }
 
-model MediaWithContents {
-  contents!
-  altText string
-}

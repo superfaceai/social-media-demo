@@ -1,8 +1,5 @@
-const { SuperfaceClient } = require('@superfaceai/one-sdk');
 const { publishPost } = require('./sf/use-cases');
 const { getAccessTokenByProviderName } = require('./utils');
-
-const sdk = new SuperfaceClient();
 
 async function publishWithFormData(body, accessToken) {
   const { providerName, profileId, text, link, mediaUrl } = body;
