@@ -38,3 +38,76 @@ Instagram Graph API allows to publish posts only to Business accounts linked wit
 - click login with Facebook and login with the same Facebook account under witch you created the Facebook application
 - consent with access to above created Facebook page and Instagram account
 - go to Publish post page and use it to publish posts to Facebook or Instagram
+
+## Code Examples
+
+We provide convenience wrappers in the [src/sf/use-cases.js](src/sf/use-cases.js) module.
+
+For Facebook and Instagram you can obtain access token and profile ID via [Graph API Explorer](https://developers.facebook.com/tools/explorer).
+
+### Listing profiles for publishing
+
+```js
+const { getProfilesForPublishing } = require('./src/sf/use-cases');
+
+const provider = 'instagram'; // or 'facebook'
+const accessToken = '<PASTE HERE>'; // User token
+
+async function getProfiles() {
+  const profiles = await getProfilesForPublishing(provider, accessToken);
+  console.log(profiles);
+}
+
+getProfiles().catch(console.error);
+```
+
+Produces output like (note the image URL is not permanent):
+
+```js
+[
+  {
+    id: '17841450841275119',
+    name: 'SF Test',
+    username: 'sftest23894729',
+    imageUrl:
+      'https://scontent.fprg5-1.fna.fbcdn.net/v/t51.2885-15/271344010_301017881962514_1451837659598750738_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=86c713&_nc_ohc=IIFO9JlwScgAX9RxmG4&_nc_ht=scontent.fprg5-1.fna&edm=AJdBtusEAAAA&oh=00_AT-A2X51mPtXWdmVdj5HtcLACp6C_-89ricCvRGIAKTxbQ&oe=61E0519A',
+  },
+];
+```
+
+### Publishing Media
+
+```js
+const { publishPost } = require('./src/sf/use-cases');
+
+const provider = 'instagram' // or 'facebook'
+const accessToken = '<PASTE HERE>'; // User token
+
+const input = {
+  profileId: '<PASTE HERE>', // Instagram profile or Facebook page ID
+  text: `Test publishing`,
+  link: 'https://example.com', // Will be either attached (if supported), concatenated is text or, in case of Instagram, ignored (because IG doesn't make links in captions clickable)
+  media: [
+    {
+      url: 'https://placekitten.com/500/500',
+      altText: 'Kitten',
+    },
+  ],
+};
+
+async function publish() {
+  const result = await publishPost(provider', input, accessToken);
+  console.log(result);
+}
+
+publish().catch(console.error);
+```
+
+Produces output like:
+
+```js
+{
+  postId: '17927610019999944',
+  url: 'https://www.instagram.com/p/CYi8mz8Kk-o/'
+}
+```

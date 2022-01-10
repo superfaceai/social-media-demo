@@ -4,11 +4,16 @@ profile = "social-media/publish-post@1.0"
 provider = "twitter"
 
 map PublishPost {
+  return map error if (input.media && input.media.length > 0) {
+    title = "Media publishing not implemented"
+    detail = "Publishing media to Twitter provider is not yet supported."
+  }
+
   http POST "/2/tweets" {
 
     request {
       headers {
-        authorization = "Bearer " + input.accessToken
+        authorization = "Bearer " + parameters.accessToken
       }
       body {
         text = input.text

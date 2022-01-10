@@ -1,81 +1,26 @@
-const { SuperfaceClient } = require('@superfaceai/one-sdk');
+const { publishPost } = require('./sf/use-cases');
+const { getAccessTokenByProviderName } = require('./utils');
 
-const sdk = new SuperfaceClient();
-
-async function publish(providerName, inputs, accessToken) {
-  // Load the installed profile
-  const profile = await sdk.getProfile('social-media/publish-post');
-
-  // Load provider
-  const provider = await sdk.getProvider(providerName);
-
-  // Use the profile
-  const result = await profile
-    .getUseCase('PublishPost')
-    .perform({ ...inputs, accessToken }, { provider });
-
-  return result.unwrap();
+async function publishWithFormData(body, accessToken) {
+  const { providerName, profileId, text, link, mediaUrl } = body;
+  const media = [];
+  if (mediaUrl) {
+    media.push({ url: mediaUrl });
+  }
+  const input = {
+    profileId,
+    text,
+    link,
+    media,
+  };
+  return publishPost(providerName, input, accessToken);
 }
 
-async function getPages(providerName, accessToken) {
-  // Load the installed profile
-  const profile = await sdk.getProfile('social-media/get-pages');
+module.exports = async function publishPostRoute(req, res, next) {
+  const { providerName } = req.body;
 
-  // Load provider
-  const provider = await sdk.getProvider(providerName);
-
-  // Use the profile
-  const result = await profile
-    .getUseCase('GetPages')
-    .perform({ accessToken }, { provider });
-
-  return result.unwrap();
-}
-
-async function getFeed(providerName, accessToken) {
-  if (providerName === 'twitter') {
-    //twitter has single feed which is identified by account id
-    return undefined;
-  }
-
-  const { pages } = await getPages(providerName, accessToken);
-
-  if (!pages.length) {
-    throw Error('User account has no pages connected');
-  }
-
-  //In this example we post to first page
-  const page = pages[0];
-
-  let feed;
-  if (providerName === 'facebook') {
-    feed = {
-      pageId: page.id,
-    };
-  } else {
-    feed = {
-      businessAccountId: page.businessAccountId,
-    };
-  }
-
-  return feed;
-}
-
-function getAccessTokenByProviderName(providerName, req) {
-  switch (providerName) {
-    case 'facebook':
-    case 'instagram':
-      return req.user.facebook?.accessToken;
-    case 'twitter':
-      return req.user.twitter?.accessToken;
-  }
-}
-
-module.exports = async function (req, res) {
   try {
-    const providerName = req.body.provider;
-
-    let accessToken = getAccessTokenByProviderName(providerName, req);
+    const accessToken = getAccessTokenByProviderName(providerName, req);
 
     if (!accessToken) {
       res.render('publish-post', {
@@ -88,27 +33,20 @@ module.exports = async function (req, res) {
       return;
     }
 
-    let feed = await getFeed(providerName, accessToken);
-
-    const result = await publish(
-      providerName,
-      {
-        feed,
-        text: req.body['post-message'],
-        imageUrl: req.body['post-image-url'],
-      },
-      accessToken
-    );
+    const result = await publishWithFormData(req.body, accessToken);
 
     res.render('publish-post', {
       user: req.user,
+      providerName,
       success: true,
+      result,
       postId: result.postId,
     });
   } catch (error) {
     console.error(error);
     res.render('publish-post', {
       user: req.user,
+      providerName,
       success: false,
       error: {
         title: error.properties?.title ?? error.message,
