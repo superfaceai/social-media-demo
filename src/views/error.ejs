@@ -1,0 +1,6 @@
+<h1><%= message %></h1>
+<h2><%= error.status %></h2>
+<% if (error.properties) { %>
+<pre><%= JSON.stringify(error.properties, undefined, 2); %></pre>
+<% } %>
+<pre><%= error.stack %></pre>

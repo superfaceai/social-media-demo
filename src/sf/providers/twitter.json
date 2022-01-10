@@ -6,5 +6,11 @@
       "baseUrl": "https://api.twitter.com"
     }
   ],
+  "parameters": [
+    {
+      "name": "accessToken",
+      "description": "User-authorized OAuth 2.0 access token"
+    }
+  ],
   "defaultService": "default"
 }

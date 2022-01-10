@@ -9,6 +9,11 @@ const session = require('express-session');
 const expressLayouts = require('express-ejs-layouts');
 const buildFacebookStrategy = require('./auth/facebook/auth');
 const buildTwitterStrategy = require('./auth/twitter/auth');
+const { getProfilesForPublishing } = require('./sf/use-cases');
+const {
+  getAccessTokenByProviderName,
+  ensureAuthenticated,
+} = require('./utils');
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -68,8 +73,23 @@ app.get('/login', function (req, res) {
   res.render('login', { user: req.user });
 });
 
-app.get('/publish-post', ensureAuthenticated, function (req, res) {
-  res.render('publish-post', { user: req.user, success: undefined });
+app.get('/publish-post', ensureAuthenticated, async function (req, res, next) {
+  const providerName = req.query.provider || 'facebook';
+  let profiles = [];
+  try {
+    const accessToken = getAccessTokenByProviderName(providerName, req);
+    profiles = await getProfilesForPublishing(providerName, accessToken);
+  } catch (err) {
+    console.error(err);
+    next(err);
+    return;
+  }
+  res.render('publish-post', {
+    user: req.user,
+    providerName,
+    profiles,
+    success: undefined,
+  });
 });
 
 app.post('/publish-post', ensureAuthenticated, require('./publish-post'));
@@ -141,16 +161,16 @@ app.get('/logout', function (req, res) {
   res.redirect('/');
 });
 
-app.listen(3000);
+// error handler
+app.use(function (err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = err;
+  res.locals.user = req.user;
 
-// Simple route middleware to ensure user is authenticated.
-//   Use this route middleware on any resource that needs to be protected.  If
-//   the request is authenticated (typically via a persistent login session),
-//   the request will proceed.  Otherwise, the user will be redirected to the
-//   login page.
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
-}
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+app.listen(3000);

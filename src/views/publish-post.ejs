@@ -1,3 +1,14 @@
+<nav>
+  Publish to:
+  <a href="?provider=facebook">Facebook</a> |
+  <a href="?provider=instagram">Instagram</a> |
+  <a href="?provider=twitter">Twitter</a>
+</nav>
+
+<main>
+
+<h1>Publish to <%= providerName %></h1>
+
 <p>Publishing as: <%= user.displayName %></p>
 <% if (success === true) { %>
 <p>Publish succeded</p>
@@ -7,11 +18,11 @@
 <% } else {%>
 <form method="post" action="/publish-post">
   <p>
-    Select social media provider:
-    <select name="provider" id="provider">
-      <option value="facebook">Facebook</option>
-      <option value="instagram">Instagram</option>
-      <option value="twitter">Twitter</option>
+    Select profile:
+    <select name="profile" id="profile">
+      <% for(const profile of profiles) { %>
+        <option value="<%= profile.id %>"><%= profile.name %></option>
+      <% } %>
     </select>
   </p>
   <p>
@@ -25,3 +36,5 @@
   <p><button>Publish</button></p>
 </form>
 <% }%>
+
+</main>
