@@ -9,7 +9,7 @@
   "parameters": [
     {
       "name": "accessToken",
-      "description": "User-authorized access token"
+      "description": "User-authorized OAuth 2.0 access token"
     }
   ],
   "defaultService": "default"
