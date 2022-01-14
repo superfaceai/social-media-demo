@@ -1,0 +1,65 @@
+<nav>
+  Profile posts from:
+  <a href="?provider=facebook">Facebook</a> |
+  <a href="?provider=instagram">Instagram</a> |
+  <a href="?provider=twitter">Twitter</a>
+</nav>
+
+<main>
+  <h1><%= providerName %> posts</h1>
+
+  <% if (success === true) { %>
+     <% if (previousPage !== undefined) { %>
+      <p>
+        <form method="post" action="/profile-posts">
+          <input type="hidden" name="profileId" value="<%= profileId %>" />
+          <input type="hidden" name="page" value="<%= previousPage %>" />
+          <input type="hidden" name="providerName" value="<%= providerName %>" />
+          <p><button>Previous page</button></p>
+        </form>
+      </p>
+     <% }%>
+     <p>
+       <ul>
+        <% for(const post of posts) { %>
+            <li>
+              <label><%= post.text %></label>
+              <ul>
+               <% for(const attachment of post.attachments) { %>
+                <li>
+                 <a href="<%= attachment.url %>"><%= attachment.altText %></a>
+                </li>
+              <% } %> 
+              </ul>
+            </li>
+        <% } %> 
+      </ul>
+    </p>
+     <% if (nextPage !== undefined) { %>
+      <p>
+        <form method="post" action="/profile-posts">
+          <input type="hidden" name="profileId" value="<%= profileId %>" />
+          <input type="hidden" name="page" value="<%= nextPage %>" />
+          <input type="hidden" name="providerName" value="<%= providerName %>" />
+          <p><button>Next page</button></p>
+        </form>
+      </p>
+     <% }%>
+   
+  <% } else if (success === false){ %>
+  <p>Getting posts failed: <%= error.title%>, <%= error.detail%></p>
+  <% } else {%>
+  <form method="post" action="/profile-posts">
+    <p>
+      Select profile:
+      <select name="profileId" id="profileId">
+        <% for(const profile of profiles) { %>
+        <option value="<%= profile.id %>"><%= profile.name %></option>
+        <% } %>
+      </select>
+    </p>
+    <input type="hidden" name="providerName" value="<%= providerName %>" />
+    <p><button>Get posts</button></p>
+  </form>
+  <% }%>
+</main>

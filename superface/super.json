@@ -38,6 +38,14 @@
           "file": "../src/sf/grid/social-media/publishing-profiles.twitter.suma"
         }
       }
+    },
+    "social-media/posts": {
+      "file": "../src/sf/grid/social-media/posts.supr",
+      "providers": {
+        "facebook": {
+          "file": "../src/sf/grid/social-media/posts.facebook.suma"
+        }
+      }
     }
   },
   "providers": {
