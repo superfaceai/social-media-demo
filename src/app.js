@@ -7,9 +7,13 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const expressLayouts = require('express-ejs-layouts');
+
 const buildFacebookStrategy = require('./auth/facebook/auth');
 const buildTwitterStrategy = require('./auth/twitter/auth');
+const buildLinkedInStrategy = require('./auth/linkedin/auth');
 const { getProfilesForPublishing } = require('./sf/use-cases');
+const config = require('./config');
+
 const {
   getAccessTokenByProviderName,
   ensureAuthenticated,
@@ -40,7 +44,13 @@ if (process.env.TWITTER_CLIENT_ID) {
   passport.use(buildTwitterStrategy());
 }
 
-var app = express();
+if (process.env.LINKEDIN_CLIENT_ID) {
+  passport.use(buildLinkedInStrategy());
+}
+
+const app = express();
+
+app.locals.providers = config.providers;
 
 // configure Express
 app.set('views', __dirname + '/views');
@@ -101,7 +111,6 @@ app.get('/profile-posts', ensureAuthenticated, require('./profile-posts'));
 //   request.  The first step in Facebook authentication will involve
 //   redirecting the user to facebook.com.  After authorization, Facebook
 //   will redirect the user back to this application at /auth/facebook/callback
-
 app.get(
   '/auth/facebook',
   passport.authenticate('facebook', {
@@ -125,7 +134,6 @@ app.get(
     // function will not be called.
   }
 );
-
 // GET /auth/facebook/callback
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  If authentication fails, the user will be redirected back to the
@@ -139,7 +147,9 @@ app.get(
   }
 );
 
-//TWITTER
+//#endregion
+
+//#region Twitter routes
 app.get(
   '/auth/twitter',
   passport.authenticate('twitter', {
@@ -163,6 +173,27 @@ app.get(
     res.redirect('/');
   }
 );
+//#endregion
+
+//#region LinkedIn routes
+app.get(
+  '/auth/linkedin',
+  passport.authenticate('linkedin', {
+    scope: ['r_emailaddress', 'r_liteprofile'],
+  }),
+  function (req, res) {
+    // The request will be redirected to LinkedIn for authentication, so this
+    // function will not be called.
+  }
+);
+app.get(
+  '/auth/linkedin/callback',
+  passport.authenticate('linkedin', { failureRedirect: '/login' }),
+  function (req, res) {
+    res.redirect('/');
+  }
+);
+//#endregion
 
 app.get('/logout', function (req, res) {
   req.logout();
