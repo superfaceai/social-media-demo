@@ -94,26 +94,7 @@ app.get('/publish-post', ensureAuthenticated, async function (req, res, next) {
 
 app.post('/publish-post', ensureAuthenticated, require('./publish-post'));
 
-app.get('/profile-posts', ensureAuthenticated, async function (req, res, next) {
-  const providerName = req.query.provider || 'facebook';
-  let profiles = [];
-  try {
-    const accessToken = getAccessTokenByProviderName(providerName, req);
-    profiles = await getProfilesForPublishing(providerName, accessToken);
-  } catch (err) {
-    console.error(err);
-    next(err);
-    return;
-  }
-  res.render('profile-posts', {
-    user: req.user,
-    providerName,
-    profiles,
-    success: undefined,
-  });
-});
-
-app.post('/profile-posts', ensureAuthenticated, require('./profile-posts'));
+app.get('/profile-posts', ensureAuthenticated, require('./profile-posts'));
 
 // GET /auth/facebook
 //   Use passport.authenticate() as route middleware to authenticate the

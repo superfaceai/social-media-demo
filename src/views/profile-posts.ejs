@@ -1,22 +1,27 @@
 <nav>
-  Profile posts from:
+  Select provider:
   <a href="?provider=facebook">Facebook</a> |
   <a href="?provider=instagram">Instagram</a> |
   <a href="?provider=twitter">Twitter</a>
 </nav>
 
 <main>
-  <h1><%= providerName %> posts</h1>
+  <h3><%= provider %> posts</h3>
+
+   <% if (profiles !== undefined) { %>  
+    <nav>
+      Select profile: <% for(const profile of profiles) { %>
+      <a href="?provider=<%= provider %>&profileId=<%= profile.id %>"
+        ><%= profile.name %></a>
+        <% } %>
+    </nav>
+  <% } %>
+
 
   <% if (success === true) { %>
      <% if (previousPage !== undefined) { %>
       <p>
-        <form method="post" action="/profile-posts">
-          <input type="hidden" name="profileId" value="<%= profileId %>" />
-          <input type="hidden" name="page" value="<%= previousPage %>" />
-          <input type="hidden" name="providerName" value="<%= providerName %>" />
-          <p><button>Previous page</button></p>
-        </form>
+        <a href="?provider=<%= provider %>&profileId=<%= profileId %>&page=<%= previousPage %>">Previous page</a>
       </p>
      <% }%>
      <p>
@@ -37,29 +42,11 @@
     </p>
      <% if (nextPage !== undefined) { %>
       <p>
-        <form method="post" action="/profile-posts">
-          <input type="hidden" name="profileId" value="<%= profileId %>" />
-          <input type="hidden" name="page" value="<%= nextPage %>" />
-          <input type="hidden" name="providerName" value="<%= providerName %>" />
-          <p><button>Next page</button></p>
-        </form>
+        <a href="?provider=<%= provider %>&profileId=<%= profileId %>&page=<%= nextPage %>">Next page</a>
       </p>
      <% }%>
    
   <% } else if (success === false){ %>
-  <p>Getting posts failed: <%= error.title%>, <%= error.detail%></p>
-  <% } else {%>
-  <form method="post" action="/profile-posts">
-    <p>
-      Select profile:
-      <select name="profileId" id="profileId">
-        <% for(const profile of profiles) { %>
-        <option value="<%= profile.id %>"><%= profile.name %></option>
-        <% } %>
-      </select>
-    </p>
-    <input type="hidden" name="providerName" value="<%= providerName %>" />
-    <p><button>Get posts</button></p>
-  </form>
-  <% }%>
+    <p>Getting posts failed: <%= error.title%>, <%= error.detail%></p>
+  <% } %>
 </main>

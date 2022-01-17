@@ -1,26 +1,24 @@
-const { getProfilePosts } = require('./sf/use-cases');
+const { getProfilePosts, getProfilesForPublishing } = require('./sf/use-cases');
 const { getAccessTokenByProviderName } = require('./utils');
 
-async function getProfilePostsWithFormData(body, accessToken) {
-  const { providerName, profileId, page } = body;
-
-  const input = {
-    profileId,
-    page,
-  };
-  return getProfilePosts(providerName, input, accessToken);
-}
-
 module.exports = async function getProfilePostsRoute(req, res, next) {
-  const { providerName } = req.body;
+  let { provider, profileId, page } = req.query;
+
+  if (!provider) {
+    provider = 'facebook';
+  }
+
+  let profiles = undefined;
 
   try {
-    const accessToken = getAccessTokenByProviderName(providerName, req);
+    const accessToken = getAccessTokenByProviderName(provider, req);
 
     if (!accessToken) {
       res.render('profile-posts', {
         user: req.user,
         success: false,
+        profiles,
+        provider,
         error: {
           title: 'User not logged in for selected provider',
         },
@@ -28,11 +26,22 @@ module.exports = async function getProfilePostsRoute(req, res, next) {
       return;
     }
 
-    const result = await getProfilePostsWithFormData(req.body, accessToken);
+    profiles = await getProfilesForPublishing(provider, accessToken);
+
+    if (!profileId) {
+      profileId = profiles[0].id;
+    }
+
+    const result = await getProfilePosts(
+      provider,
+      { profileId, page },
+      accessToken
+    );
 
     res.render('profile-posts', {
       user: req.user,
-      providerName,
+      profiles,
+      provider,
       success: true,
       result,
       posts: result.posts,
@@ -44,7 +53,8 @@ module.exports = async function getProfilePostsRoute(req, res, next) {
     console.error(error);
     res.render('profile-posts', {
       user: req.user,
-      providerName,
+      profiles,
+      provider,
       success: false,
       error: {
         title: error.properties?.title ?? error.message,
