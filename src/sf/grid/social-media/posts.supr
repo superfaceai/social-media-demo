@@ -74,6 +74,16 @@ usecase GetProfilePosts safe {
             url string
             preview
             """
+            Title
+            Attachment title.
+            """
+            title string
+            """
+            Description
+            Attachment description.
+            """
+            description string
+            """
             Alternative text
             Alternative text of the attachment.
             """

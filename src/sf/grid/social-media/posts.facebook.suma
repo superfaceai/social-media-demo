@@ -98,7 +98,8 @@ operation MapAttachment {
   return {
     type = attachment.type
     url = attachment.url
-    altText = attachment.title
+    title = attachment.title
+    description = attachment.text
     height = attachment.height
     width = attachment.width
     duration = attachment.duration
