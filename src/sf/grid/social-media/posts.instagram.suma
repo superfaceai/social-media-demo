@@ -28,7 +28,7 @@ map GetProfilePosts {
           limit = 25
           after = after
           before = before
-          fields = 'id,caption,image_url,created_time,permalink_url'
+          fields = 'id,caption,media_url,timestamp,permalink,video_title,type,media_type'
       }
     }
 
@@ -81,13 +81,14 @@ operation MapPost {
 
   return {
     id = post.id
-    url = post.permalink_url
-    createdAt = post.created_time
+    url = post.permalink
+    createdAt = post.timestamp
     text = post.caption
     attachments = [
       {
-        url: post.image_url,
-        title: post.caption
+        url: post.media_url,
+        title: post.video_title || post.caption,
+        type: post.media_type
       }
     ]
   }
