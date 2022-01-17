@@ -9,6 +9,8 @@ map GetProfilePosts {
   after = undefined
   before = undefined
 
+  // We need to pass information whether we are iterating forward (next), or backward (previous),
+  // but we use only the bare cursors, hence we need to enrich them with this info.
   set if( input.page && input.page.startsWith('next:')) {
     after = input.page.replace('next:','')
   }
