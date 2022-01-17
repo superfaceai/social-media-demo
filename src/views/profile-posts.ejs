@@ -1,0 +1,52 @@
+<nav>
+  Select provider:
+  <a href="?provider=facebook">Facebook</a> |
+  <a href="?provider=instagram">Instagram</a> |
+  <a href="?provider=twitter">Twitter</a>
+</nav>
+
+<main>
+  <h3><%= provider %> posts</h3>
+
+   <% if (profiles !== undefined) { %>  
+    <nav>
+      Select profile: <% for(const profile of profiles) { %>
+      <a href="?provider=<%= provider %>&profileId=<%= profile.id %>"
+        ><%= profile.name %></a>
+        <% } %>
+    </nav>
+  <% } %>
+
+
+  <% if (success === true) { %>
+     <% if (previousPage !== undefined) { %>
+      <p>
+        <a href="?provider=<%= provider %>&profileId=<%= profileId %>&page=<%= previousPage %>">Previous page</a>
+      </p>
+     <% }%>
+     <p>
+       <ul>
+        <% for(const post of posts) { %>
+            <li>
+              <label><%= post.text %></label>
+              <ul>
+               <% for(const attachment of post.attachments) { %>
+                <li>
+                 <a href="<%= attachment.url %>"><%= attachment.title%></a>
+                </li>
+              <% } %> 
+              </ul>
+            </li>
+        <% } %> 
+      </ul>
+    </p>
+     <% if (nextPage !== undefined) { %>
+      <p>
+        <a href="?provider=<%= provider %>&profileId=<%= profileId %>&page=<%= nextPage %>">Next page</a>
+      </p>
+     <% }%>
+   
+  <% } else if (success === false){ %>
+    <p>Getting posts failed: <%= error.title%>, <%= error.detail%></p>
+  <% } %>
+</main>
