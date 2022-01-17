@@ -44,6 +44,9 @@
       "providers": {
         "facebook": {
           "file": "../src/sf/grid/social-media/posts.facebook.suma"
+        },
+        "instagram": {
+          "file": "../src/sf/grid/social-media/posts.instagram.suma"
         }
       }
     }
