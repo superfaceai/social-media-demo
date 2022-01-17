@@ -87,7 +87,7 @@ operation MapPost {
     attachments = [
       {
         url: post.media_url,
-        title: post.video_title || post.caption,
+        title: post.video_title,
         type: post.media_type
       }
     ]

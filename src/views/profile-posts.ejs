@@ -32,7 +32,7 @@
               <ul>
                <% for(const attachment of post.attachments) { %>
                 <li>
-                 <a href="<%= attachment.url %>"><%= attachment.title%></a>
+                 <a href="<%= attachment.url %>"><%= attachment.title || post.text%></a>
                 </li>
               <% } %> 
               </ul>
