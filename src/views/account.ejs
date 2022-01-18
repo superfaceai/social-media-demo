@@ -3,11 +3,19 @@
   <h3><%= provider.name %></h3>
   <%
   if (user[provider.id]) {
-    const {profile} = user[provider.id]
+    const {profile, accessToken, refreshToken} = user[provider.id]
   %>
     <p>ID: <%= profile.id %></p>
     <p>Username: <%= profile.username %></p>
     <p>Display Name: <%= profile.displayName %></p>
+    <p>
+      Access Token
+      <input type="text" readonly value="<%= accessToken %>">
+    </p>
+    <p>
+      Refresh Token
+      <input type="text" readonly value="<%= refreshToken %>">
+    </p>
   <% } else { %>
   <p>User is not logged in using <%= provider.name %> account.</p>
   <p><a href="/auth/<%= provider.id %>">Login with <%= provider.name %></a></p>
