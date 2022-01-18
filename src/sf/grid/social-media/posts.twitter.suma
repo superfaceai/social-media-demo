@@ -26,8 +26,10 @@ map GetProfilePosts {
       posts = []
 
       set if (body.meta.result_count > 0) {
-        posts = call foreach(tweet of body.data) MapTweetToPost(
-            tweet = tweet,
+        //workaround map interpreter variables merging issue
+        posts = call foreach(index of Array(body.data.length - 1).fill().map((_, i) => i)) MapTweetToPost(
+            index = index,
+            tweets = body.data,
             includes = body.includes
           )
       }
@@ -63,11 +65,12 @@ map GetProfilePosts {
 }
 
 operation MapTweetToPost {
-  tweet = args.tweet
+  index = args.index
+  tweet = args.tweets[index]
   includes = args.includes
   attachments = []
 
-   set if(tweet.attachments && tweet.attachments.media_keys && includes.media) {
+   set if(tweet && tweet.attachments && tweet.attachments.media_keys && includes.media) {
     attachments = call foreach(mediaKey of tweet.attachments.media_keys) MapMediaAttachment(
         mediaKey = mediaKey,
         media = includes.media
