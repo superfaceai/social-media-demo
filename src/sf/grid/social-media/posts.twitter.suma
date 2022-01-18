@@ -1,0 +1,112 @@
+// Twitter API Reference: https://developer.twitter.com/en/docs/twitter-api
+
+profile = "social-media/posts@1.0"
+provider = "twitter"
+
+map GetProfilePosts {
+
+  http GET "/2/users/{input.profileId}/tweets" {
+
+    request {
+      query {
+        'tweet.fields' = 'id,text,created_at,attachments'
+        expansions = 'attachments.media_keys'
+        'media.fields' = 'duration_ms,height,media_key,preview_image_url,type,url,width,alt_text'
+        start_time = input.afterDate
+        end_time = input.beforeDate
+        pagination_token = input.page
+        max_results = 25
+      }
+      headers {
+        authorization = "Bearer " + parameters.accessToken
+      }
+    }
+
+    response 200 "application/json" {
+      posts = []
+
+      set if (body.meta.result_count > 0) {
+        posts = call foreach(tweet of body.data) MapTweetToPost(
+            tweet = tweet,
+            includes = body.includes
+          )
+      }
+
+      map result {
+        posts = posts
+        previousPage = body.meta.previous_token
+        nextPage = body.meta.next_token
+      }
+    }
+
+    response 400 "application/json" {
+      map error {
+        title = "Bad request"
+        detail = body.detail
+      }
+    }
+
+    response 401 "application/json" {
+      map error {
+        title = "Unauthenticated"
+        detail = body.detail
+      }
+    }
+
+    response 403 "application/json" {
+      map error {
+        title = "Forbidden"
+        detail = body.detail
+      }
+    }
+  }
+}
+
+operation MapTweetToPost {
+  tweet = args.tweet
+  includes = args.includes
+  attachments = []
+
+   set if(tweet.attachments && tweet.attachments.media_keys && includes.media) {
+    attachments = call foreach(mediaKey of tweet.attachments.media_keys) MapMediaAttachment(
+        mediaKey = mediaKey,
+        media = includes.media
+      )
+  }
+
+  return {
+    id = tweet.id
+    url = 'https://twitter.com/twitter/status/' + tweet.id
+    createdAt = tweet.created_at
+    text = tweet.text
+    attachments = attachments.filter((attachment) => { return attachment !== undefined })
+  }
+}
+
+operation MapMediaAttachment {
+  mediaKey = args.mediaKey
+  mediaList = args.media
+  result = undefined
+
+  filteredMediaList = mediaList.filter((media) => { return media.media_key === mediaKey })
+
+  duration = undefined
+
+  set if(filteredMediaList.length === 1 && filteredMediaList[0].duration_ms) {
+    duration = filteredMediaList[0].duration_ms / 1000
+  }
+
+  set if(filteredMediaList.length === 1) {
+    result = {
+      type: filteredMediaList[0].type,
+      url: filteredMediaList[0].url,
+      height: filteredMediaList[0].height,
+      width: filteredMediaList[0].width,
+      preview: filteredMediaList[0].preview_image_url,
+      altText: filteredMediaList[0].alt_text,
+      duration: duration
+    }
+  }
+
+  return result
+}
