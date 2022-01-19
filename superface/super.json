@@ -47,6 +47,9 @@
         },
         "instagram": {
           "file": "../src/sf/grid/social-media/posts.instagram.suma"
+        },
+        "twitter": {
+          "file": "../src/sf/grid/social-media/posts.twitter.suma"
         }
       }
     }

@@ -28,11 +28,15 @@
        <ul>
         <% for(const post of posts) { %>
             <li>
-              <label><%= post.text %></label>
+              <% if (post.url) { %>
+                <a href="<%= post.url %>"><%= post.text %></a>
+              <% } else { %>
+                <label><%= post.text %></label>
+              <% }%>
               <ul>
                <% for(const attachment of post.attachments) { %>
                 <li>
-                 <a href="<%= attachment.url %>"><%= attachment.title || post.text%></a>
+                 <a href="<%= attachment.url %>"><%= attachment.title || attachment.altText || attachment.url %></a>
                 </li>
               <% } %> 
               </ul>

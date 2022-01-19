@@ -14,12 +14,12 @@ usecase GetProfilePosts safe {
     profileId string
     """
     Before date
-    Filter posts that have been created before date
+    Filter posts that have been created before date. ISO 8601 date and time format.
     """
     beforeDate string
     """
     After date
-    Filter posts that have been created after date
+    Filter posts that have been created after date. ISO 8601 date and time format.
     """
     afterDate string
     """
