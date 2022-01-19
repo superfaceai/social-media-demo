@@ -10,26 +10,39 @@ This repository demonstrates publishing posts on Facebook and Instagram social m
 - yarn start or yarn start:dev
 - visit http://localhost:3000
 
-## Facebook application setup
+## Social media applications setup
 
-To be able to publish posts to Facebook and Instagram you have to create Facebook application. Follow steps bellow to create Facebook testing application.
+To use the demo or Superface use-cases in your project you will need to register an application with respective social media to obtain application ID and secret.
+
+We recommend to try the demo with dedicated testing social media profiles.
+
+### Facebook
+
+To be able to publish posts to Facebook and Instagram you have to create a Facebook application. Follow the steps below to create a Facebook application:
 
 - go to https://developers.facebook.com/ and login with existing Facebook account or create new one
 - once logged in Facebook visit https://developers.facebook.com/apps
 - create new Facebook app
 - add `Facebook Login` product to Facebook app and choose `WEB` app type
 - configure `Facebook Login` site url to `http://localhost:3000`
-- copy paste app id and secret from application basic settings to `.env` file
-- create new Facebook page (for testing purposes) under your Facebook account
+- copy and paste app ID and secret from application basic settings to `.env` file
+- (optional) create a Facebook page for testing purposes under your Facebook account
 
-## Instagram setup
+### Instagram
 
 Instagram Graph API allows to publish posts only to Business accounts linked with Facebook page. Follow steps bellow to setup such Instagram account.
 
-- go to https://www.instagram.com/ and create new account
+- go to https://www.instagram.com/ and login or create new account
 - go to Instagram account settings and switch the account to professional
-- go to Facebook page (previously created for testing purposes) settings
-- in Facebook page settings select Instagram and connect your Instagram account with Facebook page
+- go to Facebook page settings
+- in the Facebook page settings select Instagram and connect your Instagram account with Facebook page
+
+### Twitter
+
+- go to https://developer.twitter.com/ and either sign up for a new account or sign in with existing one
+- sign up for Essential access; you will need to verify a phone number for your Twitter account
+- create a project and application (Essential account is limited to a single project and application)
+- in application settings generate OAuth 2.0 Client ID and Client Secret and paste them into `.env` file; mind that you cannot view the secret again later, only regenerate it
 
 ## Using the demo app
 
@@ -41,9 +54,9 @@ Instagram Graph API allows to publish posts only to Business accounts linked wit
 
 ## Code Examples
 
-We provide convenience wrappers in the [src/sf/use-cases.js](src/sf/use-cases.js) module.
+Check the module [src/sf/use-cases.js](src/sf/use-cases.js) for convenience wrappers over OneSDK calls. Use them for inspiration in your own project.
 
-For Facebook and Instagram you can obtain access token and profile ID via [Graph API Explorer](https://developers.facebook.com/tools/explorer).
+For Facebook and Instagram you can also obtain access token and profile ID via [Graph API Explorer](https://developers.facebook.com/tools/explorer).
 
 ### Listing profiles for publishing
 
