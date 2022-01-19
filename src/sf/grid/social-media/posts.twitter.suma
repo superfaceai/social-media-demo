@@ -91,22 +91,22 @@ operation MapMediaAttachment {
   mediaList = args.media
   result = undefined
 
-  filteredMediaList = mediaList.filter((media) => { return media.media_key === mediaKey })
+  foundMedia = mediaList.find((media) => { return media.media_key === mediaKey })
 
   duration = undefined
 
-  set if(filteredMediaList.length === 1 && filteredMediaList[0].duration_ms) {
-    duration = filteredMediaList[0].duration_ms / 1000
+  set if(foundMedia && foundMedia.duration_ms) {
+    duration = foundMedia.duration_ms / 1000
   }
 
-  set if(filteredMediaList.length === 1) {
+  set if(foundMedia) {
     result = {
-      type: filteredMediaList[0].type,
-      url: filteredMediaList[0].url,
-      height: filteredMediaList[0].height,
-      width: filteredMediaList[0].width,
-      preview: filteredMediaList[0].preview_image_url,
-      altText: filteredMediaList[0].alt_text,
+      type: foundMedia.type,
+      url: foundMedia.url,
+      height: foundMedia.height,
+      width: foundMedia.width,
+      preview: foundMedia.preview_image_url,
+      altText: foundMedia.alt_text,
       duration: duration
     }
   }
