@@ -79,7 +79,7 @@ operation MapTweetToPost {
 
   return {
     id = tweet.id
-    url = 'https://twitter.com/twitter/status/' + tweet.id
+    url = 'https://twitter.com/i/status/' + tweet.id
     createdAt = tweet.created_at
     text = tweet.text
     attachments = attachments.filter((attachment) => { return attachment !== undefined })
