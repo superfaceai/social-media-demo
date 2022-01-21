@@ -179,7 +179,12 @@ app.get(
 app.get(
   '/auth/linkedin',
   passport.authenticate('linkedin', {
-    scope: ['r_emailaddress', 'r_liteprofile'],
+    scope: [
+      'r_liteprofile',
+      'r_organization_social',
+      'w_organization_social',
+      'rw_organization_admin',
+    ],
   }),
   function (req, res) {
     // The request will be redirected to LinkedIn for authentication, so this
