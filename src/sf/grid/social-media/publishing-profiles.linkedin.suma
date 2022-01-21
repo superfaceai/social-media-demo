@@ -1,0 +1,71 @@
+profile = "social-media/publishing-profiles@1.0"
+provider = "linkedin"
+
+"""
+Get Company profiles for publishing
+https://docs.microsoft.com/en-us/linkedin/marketing/integrations/community-management/organizations/organization-access-control-by-role
+https://docs.microsoft.com/en-us/linkedin/marketing/integrations/community-management/organizations/organization-lookup-api
+"""
+map GetProfilesForPublishing {
+  // FIXME: Pagination
+  http GET "/v2/organizationAcls" {
+    request {
+      query {
+        q = "roleAssignee",
+        state = "APPROVED",
+        role = "ADMINISTRATOR",
+        // https://docs.microsoft.com/en-us/linkedin/shared/api-guide/concepts/decoration?context=linkedin/marketing/context
+        // Lovely, right?
+        projection = "(paging,elements(*(organization~(id,localizedName,vanityName,logoV2(cropped~:playableStreams)))))",
+        count = 100,
+      }
+    }
+
+    response 200 "application/json" {
+      profiles = call foreach(element of body.elements) MapOrganization(element = element)
+
+      return map result {
+        profiles = profiles
+      }
+    }
+
+    response 400 "application/json" {
+      return map error {
+        title = "Bad request"
+        detail = body.error.message
+      }
+    }
+
+    response 401 "application/json" {
+      return map error {
+        title = "Unauthenticated"
+        detail = body.error.message
+      }
+    }
+
+    response 403 "application/json" {
+      return map error {
+        title = "Forbidden"
+        detail = body.error.message
+      }
+    }
+  }
+}
+
+operation MapOrganization {
+  org = element['organization~']
+  orgLogo = null
+  // FIXME: What if it's empty?
+  logoElements = org.logoV2['cropped~'].elements
+  set if (logoElements.length > 0) {
+    // FIXME: Find only authorizationMethod=PUBLIC and identifierType=EXTERNAL_URL?
+    orgLogo = logoElements[0].identifiers[0].identifier
+  }
+
+  return {
+    id = org.id
+    name = org.localizedName
+    username = org.vanityName
+    imageUrl = orgLogo
+  }
+}
