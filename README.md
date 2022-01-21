@@ -52,29 +52,106 @@ Instagram Graph API allows to publish posts only to Business accounts linked wit
 - consent with access to above created Facebook page and Instagram account
 - go to Publish post page and use it to publish posts to Facebook or Instagram
 
+## Use in your project
+
+### Superface setup
+
+Setup [OneSDK](https://github.com/superfaceai/one-sdk-js) and `super.json` configuration for the relevant profiles and providers:
+
+1. Install OneSDK in your project:
+
+   ```
+   npm install @superfaceai/one-sdk
+   ```
+
+2. Install social media profiles with [Superface CLI](https://github.com/superfaceai/cli):
+
+   ```
+   npx @superfaceai/cli install social-media/publishing-profiles
+   npx @superfaceai/cli install social-media/publish-post
+   ```
+
+3. Configure providers you want to use (repeat with `instagram` and `twitter` instead of `facebook`):
+
+   ```
+   npx @superfaceai/cli configure facebook -p social-media/publishing-profiles
+   npx @superfaceai/cli configure facebook -p social-media/publish-post
+   ```
+
+### Getting access tokens
+
+Superface and OneSDK at this point doesn't handle authorization flow. In this demo we rely on [Passport.js](http://www.passportjs.org/) library to obtain the access tokens. Check the implementation in [src/app.js](src/app.js) and [src/auth](src/auth).
+
+Currently we use a custom Passport strategy for Twitter due to non-standard header use in Twitter's OAuth 2.0 flow.
+
+You can also obtain access tokens through other means and libraries, like official SDK from the respective provider, integration for your framework, or [Grant OAuth Proxy](https://github.com/simov/grant).
+
+For Facebook and Instagram you can obtain access token and profile ID via [Graph API Explorer](https://developers.facebook.com/tools/explorer) (mind though the access tokens have limited lifetime).
+
+### OAuth scopes
+
+Pay attention to the authorization scopes requested by your application. In this demo we use the following scopes (not all of them are used by the current profiles though):
+
+- Facebook & Instagram:
+
+  ```js
+  [
+    //Facebook scopes required to publish posts and list pages
+    'pages_show_list',
+    'read_insights',
+    'pages_read_engagement',
+    'pages_manage_posts',
+    'pages_read_user_content',
+
+    //Instagram scopes required to publish posts
+    'instagram_basic',
+    'instagram_manage_comments',
+    'instagram_manage_insights',
+    'instagram_content_publish',
+  ];
+  ```
+
+- Twitter:
+
+  ```js
+  ['tweet.read', 'tweet.write', 'users.read'];
+  ```
+
 ## Code Examples
 
 Check the module [src/sf/use-cases.js](src/sf/use-cases.js) for convenience wrappers over OneSDK calls. Use them for inspiration in your own project.
 
-For Facebook and Instagram you can also obtain access token and profile ID via [Graph API Explorer](https://developers.facebook.com/tools/explorer).
+Check [Superface documentation](https://superface.ai/docs/getting-started) on how to work with OneSDK and [contact us](https://superface.ai/support) if anything's unclear.
 
 ### Listing profiles for publishing
 
+Returns a list of social media profiles the user has access to for publishing. Profile's ID is needed for other use-cases.
+
 ```js
-const { getProfilesForPublishing } = require('./src/sf/use-cases');
+import { SuperfaceClient } from '@superfaceai/one-sdk';
 
-const provider = 'instagram'; // or 'facebook'
-const accessToken = '<PASTE HERE>'; // User token
+const sdk = new SuperfaceClient();
 
-async function getProfiles() {
-  const profiles = await getProfilesForPublishing(provider, accessToken);
-  console.log(profiles);
+const PROVIDER_NAME = 'instagram'; // or 'facebook' or 'twitter
+const ACCESS_TOKEN = '<PASTE HERE>'; // user access token
+
+async function getProfilesForPublishing(providerName, accessToken) {
+  const profile = await sdk.getProfile('social-media/publishing-profiles');
+  const provider = await sdk.getProvider(providerName);
+
+  const result = await profile
+    .getUseCase('GetProfilesForPublishing')
+    .perform(null, { provider, parameters: { accessToken } });
+
+  return result.unwrap()?.profiles;
 }
 
-getProfiles().catch(console.error);
+getProfilesForPublishing(PROVIDER_NAME, ACCESS_TOKEN)
+  .then(console.log)
+  .catch(console.error);
 ```
 
-Produces output like (note the image URL is not permanent):
+Produces output like:
 
 ```js
 [
@@ -88,16 +165,18 @@ Produces output like (note the image URL is not permanent):
 ];
 ```
 
-### Publishing Media
+### Publish post with image
 
 ```js
-const { publishPost } = require('./src/sf/use-cases');
+import { SuperfaceClient } from '@superfaceai/one-sdk';
 
-const provider = 'instagram' // or 'facebook'
-const accessToken = '<PASTE HERE>'; // User token
+const sdk = new SuperfaceClient();
 
-const input = {
-  profileId: '<PASTE HERE>', // Instagram profile or Facebook page ID
+const PROVIDER_NAME = 'instagram'; // or 'facebook' or 'twitter
+const ACCESS_TOKEN = '<PASTE HERE>'; // user access token
+
+const INPUT = {
+  profileId: '<PASTE HERE>', // profile ID (e.g. Instagram account, Facebook page; can be omitted for Twitter)
   text: `Test publishing`,
   link: 'https://example.com', // Will be either attached (if supported), concatenated is text or, in case of Instagram, ignored (because IG doesn't make links in captions clickable)
   media: [
@@ -108,12 +187,19 @@ const input = {
   ],
 };
 
-async function publish() {
-  const result = await publishPost(provider', input, accessToken);
-  console.log(result);
+async function publishPost(providerName, input, accessToken) {
+  const profile = await sdk.getProfile('social-media/publish-post');
+
+  const provider = await sdk.getProvider(providerName);
+
+  const result = await profile
+    .getUseCase('PublishPost')
+    .perform(input, { provider, parameters: { accessToken } });
+
+  return result.unwrap();
 }
 
-publish().catch(console.error);
+publishPost(PROVIDER_NAME, INPUT, ACCESS_TOKEN).catch(console.error);
 ```
 
 Produces output like:
@@ -124,3 +210,7 @@ Produces output like:
   url: 'https://www.instagram.com/p/CYi8mz8Kk-o/'
 }
 ```
+
+## Current limitations
+
+See the issue [Current Limitations](https://github.com/superfaceai/social-media-demo/issues/11).
