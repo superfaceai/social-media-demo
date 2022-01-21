@@ -1,6 +1,11 @@
 const sdk = require('./sdk');
 
-const ALLOWED_PROVIDERS = new Set(['facebook', 'instagram', 'twitter']);
+const ALLOWED_PROVIDERS = new Set([
+  'facebook',
+  'instagram',
+  'twitter',
+  'linkedin',
+]);
 
 function checkAllowedProvider(provider) {
   if (!provider || !ALLOWED_PROVIDERS.has(provider)) {
@@ -10,6 +15,7 @@ function checkAllowedProvider(provider) {
 
 async function getProfilesForPublishing(providerName, accessToken) {
   checkAllowedProvider(providerName);
+  console.log('getProfilesForPublishing', providerName, accessToken)
   const profile = await sdk.getProfile('social-media/publishing-profiles');
 
   const provider = await sdk.getProvider(providerName);

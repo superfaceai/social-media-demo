@@ -19,6 +19,11 @@ map GetProfilesForPublishing {
         projection = "(paging,elements(*(organization~(id,localizedName,vanityName,logoV2(cropped~:playableStreams)))))",
         count = 100,
       }
+      headers {
+        "X-Restli-Protocol-Version" = "2.0.0",
+        Authorization = `Bearer ${parameters.accessToken}`,
+        Accept = "application/json"
+      }
     }
 
     response 200 "application/json" {
@@ -32,28 +37,28 @@ map GetProfilesForPublishing {
     response 400 "application/json" {
       return map error {
         title = "Bad request"
-        detail = body.error.message
+        detail = body.message
       }
     }
 
     response 401 "application/json" {
       return map error {
         title = "Unauthenticated"
-        detail = body.error.message
+        detail = body.message
       }
     }
 
     response 403 "application/json" {
       return map error {
         title = "Forbidden"
-        detail = body.error.message
+        detail = body.message
       }
     }
   }
 }
 
 operation MapOrganization {
-  org = element['organization~']
+  org = args.element['organization~']
   orgLogo = null
   // FIXME: What if it's empty?
   logoElements = org.logoV2['cropped~'].elements
@@ -63,7 +68,7 @@ operation MapOrganization {
   }
 
   return {
-    id = org.id
+    id = args.element.organization
     name = org.localizedName
     username = org.vanityName
     imageUrl = orgLogo
