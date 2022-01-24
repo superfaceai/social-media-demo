@@ -15,6 +15,7 @@ function createVerifyCallback() {
     if (!provider) {
       throw new TypeError('Missing strategy provider name');
     }
+    console.log('verifyCallback', { provider, accessToken, refreshToken });
     const existingUser = req.user || {};
     // To keep the example simple, the user's profile is returned to
     // represent the logged-in user. In a typical application, you would want

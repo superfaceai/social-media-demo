@@ -1,6 +1,11 @@
 const sdk = require('./sdk');
 
-const ALLOWED_PROVIDERS = new Set(['facebook', 'instagram', 'twitter']);
+const ALLOWED_PROVIDERS = new Set([
+  'facebook',
+  'instagram',
+  'twitter',
+  'linkedin',
+]);
 
 function checkAllowedProvider(provider) {
   if (!provider || !ALLOWED_PROVIDERS.has(provider)) {

@@ -3,8 +3,8 @@ function getAccessTokenByProviderName(providerName, req) {
     case 'facebook':
     case 'instagram':
       return req.user.facebook?.accessToken;
-    case 'twitter':
-      return req.user.twitter?.accessToken;
+    default:
+      return req.user[providerName]?.accessToken;
   }
 }
 

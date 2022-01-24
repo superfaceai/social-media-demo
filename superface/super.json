@@ -36,6 +36,9 @@
         },
         "twitter": {
           "file": "../src/sf/grid/social-media/publishing-profiles.twitter.suma"
+        },
+        "linkedin": {
+          "file": "../src/sf/grid/social-media/publishing-profiles.linkedin.suma"
         }
       }
     },
@@ -63,6 +66,9 @@
     },
     "twitter": {
       "file": "../src/sf/providers/twitter.json"
+    },
+    "linkedin": {
+      "file": "../src/sf/providers/linkedin.json"
     }
   }
 }
