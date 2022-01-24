@@ -60,9 +60,11 @@ map GetProfilesForPublishing {
 operation MapOrganization {
   org = args.element['organization~']
   orgLogo = null
-  // FIXME: What if it's empty?
-  logoElements = org.logoV2['cropped~'].elements
-  set if (logoElements.length > 0) {
+  // If the profile is missing logo, the property logoV2 will be omitted
+  set if (org.logoV2 && org.logoV2['cropped~']) {
+    logoElements = org.logoV2['cropped~'].elements
+  }
+  set if (logoElements && logoElements.length > 0) {
     // FIXME: Find only authorizationMethod=PUBLIC and identifierType=EXTERNAL_URL?
     orgLogo = logoElements[0].identifiers[0].identifier
   }

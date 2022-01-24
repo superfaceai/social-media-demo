@@ -15,7 +15,6 @@ function checkAllowedProvider(provider) {
 
 async function getProfilesForPublishing(providerName, accessToken) {
   checkAllowedProvider(providerName);
-  console.log('getProfilesForPublishing', providerName, accessToken)
   const profile = await sdk.getProfile('social-media/publishing-profiles');
 
   const provider = await sdk.getProvider(providerName);
