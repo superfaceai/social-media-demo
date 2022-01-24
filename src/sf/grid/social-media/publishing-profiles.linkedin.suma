@@ -60,6 +60,8 @@ map GetProfilesForPublishing {
 operation MapOrganization {
   org = args.element['organization~']
   orgLogo = null
+  logoElements = null
+  
   // If the profile is missing logo, the property logoV2 will be omitted
   set if (org.logoV2 && org.logoV2['cropped~']) {
     logoElements = org.logoV2['cropped~'].elements
