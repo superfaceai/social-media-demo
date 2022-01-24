@@ -44,6 +44,16 @@ Instagram Graph API allows to publish posts only to Business accounts linked wit
 - create a project and application (Essential account is limited to a single project and application)
 - in application settings generate OAuth 2.0 Client ID and Client Secret and paste them into `.env` file; mind that you cannot view the secret again later, only regenerate it
 
+### LinkedIn
+
+- create a new app via https://developer.linkedin.com/
+- preferably link and verify the app with an existing LinkedIn page
+- on Auth page
+  - copy Client ID and Client Secret to `.env`
+  - add `http://localhost:3000/auth/linkedin/callback` in "Authorized redirect URLs for your app" section
+- on Products page, add the following products to your application: "Sign In with LinkedIn", "Marketing Developer Platform" (you can also add "Share on LinkedIn" which, however, is intended for sharing content on personal profiles)
+- fill in the "Access Request Form" for Marketing Developer Platform and wait a few days for confirmation by LinkedIn
+
 ## Using the demo app
 
 - start the app `yarn start:dev`
