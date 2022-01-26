@@ -37,6 +37,13 @@
     debug "^4.3.1"
     typescript "^4"
 
+"@superfaceai/passport-twitter-oauth2@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@superfaceai/passport-twitter-oauth2/-/passport-twitter-oauth2-1.0.0.tgz#e345a5908d25c8f6d23f320934fb05d7af369710"
+  integrity sha512-N9cNoCm1RYYsp89jLyiE/Msqlxl4ZfWm17KewIPGhy4126fBgS/6NCbsellxedw4/2lBBtGVKXM09HSutzsiwg==
+  dependencies:
+    passport-oauth2 "^1.6.1"
+
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-1.1.2.tgz#b1665e2c461a2cd92f4c1bbf50d5454de0d4b421"
@@ -1347,6 +1354,7 @@ typescript-is@^0.18.3:
   integrity sha512-kBgZIJt3AKrtye1H2GYf9bWu1YS0Z9AZZl4OZG4z2Ps2jPMZuycilP9RkxPLP+tPxCUjXfmaJti9TNGoz5schA==
   dependencies:
     nested-error-stacks "^2"
+    reflect-metadata ">=0.1.12"
     tsutils "^3.17.1"
   optionalDependencies:
     reflect-metadata ">=0.1.12"
