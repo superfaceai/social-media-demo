@@ -17,6 +17,7 @@ const config = require('./config');
 const {
   getAccessTokenByProviderName,
   ensureAuthenticated,
+  getDefaultProvider,
 } = require('./utils');
 
 // Passport session setup.
@@ -84,7 +85,7 @@ app.get('/login', function (req, res) {
 });
 
 app.get('/publish-post', ensureAuthenticated, async function (req, res, next) {
-  const providerName = req.query.provider || 'facebook';
+  const providerName = req.query.provider || getDefaultProvider(req);
   let profiles = [];
   try {
     const accessToken = getAccessTokenByProviderName(providerName, req);
