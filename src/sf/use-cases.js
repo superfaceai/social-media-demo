@@ -50,8 +50,21 @@ async function getProfilePosts(providerName, input, accessToken) {
   return result.unwrap();
 }
 
+async function getFollowers(providerName, input, accessToken) {
+  const profile = await sdk.getProfile('social-media/followers');
+
+  const provider = await sdk.getProvider(providerName);
+
+  const result = await profile
+    .getUseCase('GetFollowers')
+    .perform(input, { provider, parameters: { accessToken } });
+
+  return result.unwrap();
+}
+
 module.exports = {
   getProfilesForPublishing,
   publishPost,
   getProfilePosts,
+  getFollowers,
 };
