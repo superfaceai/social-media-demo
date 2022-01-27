@@ -1,11 +1,11 @@
 const { getProfilePosts, getProfilesForPublishing } = require('./sf/use-cases');
-const { getAccessTokenByProviderName } = require('./utils');
+const { getAccessTokenByProviderName, getDefaultProvider } = require('./utils');
 
 module.exports = async function getProfilePostsRoute(req, res, next) {
   let { provider, profileId, page } = req.query;
 
   if (!provider) {
-    provider = 'facebook';
+    provider = getDefaultProvider(req);
   }
 
   let profiles = undefined;
