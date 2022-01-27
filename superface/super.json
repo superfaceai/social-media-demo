@@ -24,6 +24,14 @@
         "facebook": {},
         "twitter": {}
       }
+    },
+    "social-media/followers": {
+      "file": "../src/sf/grid/social-media/followers.supr",
+      "providers": {
+        "twitter": {
+          "file": "../src/sf/grid/social-media/followers.twitter.suma"
+        }
+      }
     }
   },
   "providers": {
