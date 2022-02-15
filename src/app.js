@@ -154,7 +154,7 @@ app.get(
 app.get(
   '/auth/twitter',
   passport.authenticate('twitter', {
-    scope: ['tweet.read', 'tweet.write', 'users.read'],
+    scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'],
   }),
   function (req, res) {
     // The request will be redirected to Twitter for authentication, so this
