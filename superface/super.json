@@ -1,74 +1,55 @@
 {
   "profiles": {
     "social-media/publish-post": {
-      "file": "../src/sf/grid/social-media/publish-post.supr",
+      "version": "1.0.0",
       "providers": {
-        "instagram": {
-          "file": "../src/sf/grid/social-media/publish-post.instagram.suma"
-        },
-        "facebook": {
-          "file": "../src/sf/grid/social-media/publish-post.facebook.suma"
-        },
-        "twitter": {
-          "file": "../src/sf/grid/social-media/publish-post.twitter.suma"
-        }
-      }
-    },
-    "social-media/get-pages": {
-      "file": "../src/sf/grid/social-media/get-pages.supr",
-      "providers": {
-        "instagram": {
-          "file": "../src/sf/grid/social-media/get-pages.instagram.suma"
-        },
-        "facebook": {
-          "file": "../src/sf/grid/social-media/get-pages.facebook.suma"
-        }
+        "instagram": {},
+        "facebook": {},
+        "twitter": {}
       }
     },
     "social-media/publishing-profiles": {
-      "file": "../src/sf/grid/social-media/publishing-profiles.supr",
+      "version": "1.0.0",
       "providers": {
-        "facebook": {
-          "file": "../src/sf/grid/social-media/publishing-profiles.facebook.suma"
-        },
-        "instagram": {
-          "file": "../src/sf/grid/social-media/publishing-profiles.instagram.suma"
-        },
-        "twitter": {
-          "file": "../src/sf/grid/social-media/publishing-profiles.twitter.suma"
-        },
-        "linkedin": {
-          "file": "../src/sf/grid/social-media/publishing-profiles.linkedin.suma"
-        }
+        "instagram": {},
+        "facebook": {},
+        "twitter": {},
+        "linkedin": {}
       }
     },
     "social-media/posts": {
-      "file": "../src/sf/grid/social-media/posts.supr",
+      "version": "1.0.0",
       "providers": {
-        "facebook": {
-          "file": "../src/sf/grid/social-media/posts.facebook.suma"
-        },
-        "instagram": {
-          "file": "../src/sf/grid/social-media/posts.instagram.suma"
-        },
-        "twitter": {
-          "file": "../src/sf/grid/social-media/posts.twitter.suma"
-        }
+        "instagram": {},
+        "facebook": {},
+        "twitter": {}
       }
     }
   },
   "providers": {
     "instagram": {
-      "file": "../src/sf/providers/instagram.json"
+      "security": [],
+      "parameters": {
+        "accessToken": "$INSTAGRAM_ACCESSTOKEN"
+      }
     },
     "facebook": {
-      "file": "../src/sf/providers/facebook.json"
+      "security": [],
+      "parameters": {
+        "accessToken": "$FACEBOOK_ACCESSTOKEN"
+      }
     },
     "twitter": {
-      "file": "../src/sf/providers/twitter.json"
+      "security": [],
+      "parameters": {
+        "accessToken": "$TWITTER_ACCESSTOKEN"
+      }
     },
     "linkedin": {
-      "file": "../src/sf/providers/linkedin.json"
+      "security": [],
+      "parameters": {
+        "accessToken": "$LINKEDIN_ACCESSTOKEN"
+      }
     }
   }
 }
