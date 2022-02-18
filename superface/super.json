@@ -26,11 +26,9 @@
       }
     },
     "social-media/followers": {
-      "file": "../src/sf/grid/social-media/followers.supr",
+      "version": "1.1.0",
       "providers": {
-        "twitter": {
-          "file": "../src/sf/grid/social-media/followers.twitter.suma"
-        }
+        "twitter": {}
       }
     }
   },
@@ -47,16 +45,16 @@
         "accessToken": "$FACEBOOK_ACCESSTOKEN"
       }
     },
-    "twitter": {
-      "security": [],
-      "parameters": {
-        "accessToken": "$TWITTER_ACCESSTOKEN"
-      }
-    },
     "linkedin": {
       "security": [],
       "parameters": {
         "accessToken": "$LINKEDIN_ACCESSTOKEN"
+      }
+    },
+    "twitter": {
+      "security": [],
+      "parameters": {
+        "accessToken": "$TWITTER_ACCESSTOKEN"
       }
     }
   }
