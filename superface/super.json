@@ -22,7 +22,8 @@
       "providers": {
         "instagram": {},
         "facebook": {},
-        "twitter": {}
+        "twitter": {},
+        "linkedin": {}
       }
     }
   },
