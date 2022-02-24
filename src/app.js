@@ -107,6 +107,8 @@ app.post('/publish-post', ensureAuthenticated, require('./publish-post'));
 
 app.get('/profile-posts', ensureAuthenticated, require('./profile-posts'));
 
+app.get('/followers', ensureAuthenticated, require('./followers'));
+
 // GET /auth/facebook
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  The first step in Facebook authentication will involve
@@ -154,7 +156,13 @@ app.get(
 app.get(
   '/auth/twitter',
   passport.authenticate('twitter', {
-    scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'],
+    scope: [
+      'tweet.read',
+      'tweet.write',
+      'users.read',
+      'offline.access',
+      'follows.read',
+    ],
   }),
   function (req, res) {
     // The request will be redirected to Twitter for authentication, so this

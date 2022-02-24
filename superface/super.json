@@ -24,6 +24,12 @@
         "facebook": {},
         "twitter": {}
       }
+    },
+    "social-media/followers": {
+      "version": "1.1.0",
+      "providers": {
+        "twitter": {}
+      }
     }
   },
   "providers": {
@@ -39,16 +45,16 @@
         "accessToken": "$FACEBOOK_ACCESSTOKEN"
       }
     },
-    "twitter": {
-      "security": [],
-      "parameters": {
-        "accessToken": "$TWITTER_ACCESSTOKEN"
-      }
-    },
     "linkedin": {
       "security": [],
       "parameters": {
         "accessToken": "$LINKEDIN_ACCESSTOKEN"
+      }
+    },
+    "twitter": {
+      "security": [],
+      "parameters": {
+        "accessToken": "$TWITTER_ACCESSTOKEN"
       }
     }
   }

@@ -1,0 +1,44 @@
+<nav>
+  Select provider:
+  <a href="?provider=twitter">Twitter</a>
+</nav>
+
+<main>
+  <h3><%= provider %> followers</h3>
+
+   <% if (profiles !== undefined) { %>  
+    <nav>
+      Select profile: <% for(const profile of profiles) { %>
+      <a href="?provider=<%= provider %>&profileId=<%= profile.id %>"
+        ><%= profile.name %></a>
+        <% } %>
+    </nav>
+  <% } %>
+
+
+  <% if (success === true) { %>
+     <% if (previousPage !== undefined) { %>
+      <p>
+        <a href="?provider=<%= provider %>&profileId=<%= profileId %>&page=<%= previousPage %>">Previous page</a>
+      </p>
+     <% }%>
+     <p>
+       <ul>
+        <% for(const follower of followers) { %>
+            <li>
+                <label><%= follower.username %></label>
+                <img src="<%= follower.imageUrl %>"></img>
+            </li>
+        <% } %> 
+      </ul>
+    </p>
+     <% if (nextPage !== undefined) { %>
+      <p>
+        <a href="?provider=<%= provider %>&profileId=<%= profileId %>&page=<%= nextPage %>">Next page</a>
+      </p>
+     <% }%>
+   
+  <% } else if (success === false){ %>
+    <p>Getting followers failed: <%= error.title%>, <%= error.detail%></p>
+  <% } %>
+</main>

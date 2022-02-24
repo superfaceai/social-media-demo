@@ -124,7 +124,20 @@ Pay attention to the authorization scopes requested by your application. In this
 - Twitter:
 
   ```js
-  ['tweet.read', 'tweet.write', 'users.read'];
+  [
+    //Scopes required to publish post
+    'tweet.write',
+
+    //Scopes required to get followers
+    'follows.read',
+
+    //Scopes required to publish post and get followers
+    'tweet.read',
+    'users.read',
+
+    //Scopes required to get refresh token
+    'offline.access',
+  ];
   ```
 
 ## Code Examples
