@@ -5,7 +5,8 @@
       "providers": {
         "instagram": {},
         "facebook": {},
-        "twitter": {}
+        "twitter": {},
+        "linkedin": {}
       }
     },
     "social-media/publishing-profiles": {
