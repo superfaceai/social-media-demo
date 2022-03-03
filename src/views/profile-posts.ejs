@@ -33,13 +33,15 @@
               <% } else { %>
                 <label><%= post.text %></label>
               <% }%>
+              <% if (post.attachments) { %>
               <ul>
-               <% for(const attachment of post.attachments) { %>
-                <li>
-                 <a href="<%= attachment.url %>"><%= attachment.title || attachment.altText || attachment.url %></a>
-                </li>
-              <% } %> 
+                <% for(const attachment of post.attachments) { %>
+                  <li>
+                  <a href="<%= attachment.url %>"><%= attachment.title || attachment.altText || attachment.url %></a>
+                  </li>
+                <% } %> 
               </ul>
+              <% } %>
             </li>
         <% } %> 
       </ul>
