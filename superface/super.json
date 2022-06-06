@@ -1,7 +1,7 @@
 {
   "profiles": {
     "social-media/publish-post": {
-      "version": "1.0.0",
+      "version": "1.2.0",
       "providers": {
         "instagram": {},
         "facebook": {},
@@ -10,7 +10,7 @@
       }
     },
     "social-media/publishing-profiles": {
-      "version": "1.0.0",
+      "version": "1.0.1",
       "providers": {
         "instagram": {},
         "facebook": {},
@@ -19,7 +19,7 @@
       }
     },
     "social-media/posts": {
-      "version": "1.0.0",
+      "version": "1.0.1",
       "providers": {
         "instagram": {},
         "facebook": {},
@@ -28,7 +28,7 @@
       }
     },
     "social-media/followers": {
-      "version": "1.1.0",
+      "version": "1.2.0",
       "providers": {
         "twitter": {}
       }

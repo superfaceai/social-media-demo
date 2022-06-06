@@ -1,0 +1,172 @@
+"""
+Publish Social Media Post
+Publish posts on social media such as Instagram, Facebook, or Twitter.
+"""
+
+name = "social-media/publish-post"
+version = "1.2.0"
+
+"""
+Publish a Post
+Publish a post on a social media profile with optional image attachments.
+"""
+usecase PublishPost unsafe {
+  input {
+    """
+    Profile ID
+    Identifier of a profile to publish to. May be optional with some providers.
+    """
+    profileId string!
+
+    """
+    Text
+    Text of the post
+    """
+    text string!
+
+    """
+    Link
+    URL to attach to the post
+    """
+    link string!
+
+    """
+    Title
+    Title of the post, if supported by the provider (e.g. Pinterest). Ignored otherwise.
+    """
+    title string!
+
+    """
+    Media attachments
+    Only images and gifs are supported
+    """
+    media [
+      MediaItem
+    ]
+  }
+
+  result {
+
+    """
+    Post ID
+    Identifier of the published post.
+    """
+    postId string
+
+    """
+    Post URL
+    Link to the published post.
+    """
+    url string
+  }
+
+  error {
+    """
+    Title
+    A short, human-readable summary of the problem type.
+    """
+    title! string
+
+    """
+    Detail
+    A human-readable explanation specific to this occurrence of the problem.
+    """
+    detail string
+
+    """
+    Code
+    Normalized error code usable across providers
+    """
+    code ErrorCode
+
+    """
+    Original Error
+    Original response from the provider
+    """
+    original
+  }
+
+  example Successful {
+    input {
+      profileId = '110658944785122',
+      text = 'Text of the Post.',
+    }
+
+    result {
+      postId = '110658944785122_125682506616099',
+      url = 'https://www.facebook.com/110658944785122/posts/125682506616099/',
+    }
+  }
+
+  example Failed {
+    input {
+      profileId = 'invalid profile ID',
+      text = 'Text of the Post.',
+    }
+
+    error {
+      title = 'Bad request'
+    }
+  }
+}
+
+model MediaItem {
+  """
+  URL of image
+  Will be fetched by provider, must be accessible publicly. 
+  If both `contents` and `url` fields are provided, a preferable option will be picked by the map.
+  """
+  url string!
+  """
+  Buffer or base64 encoded string with image
+  If both `contents` and `url` fields are provided, a preferable option will be picked by the map.
+  """
+  contents
+  "Alternative text for screen readers"
+  altText string
+}
+
+// https://developers.facebook.com/docs/instagram-api/reference/error-codes/
+// https://developers.facebook.com/docs/graph-api/guides/error-handling/
+// https://developers.facebook.com/docs/graph-api/overview/rate-limiting#error-codes
+
+model ErrorCode enum {
+  """
+  Bad request
+  The request was invalid or cannot be otherwise served.
+  """
+  BadRequest
+  """
+  Not found
+  The profileId, container or other input item does not exist.
+  """
+  NotFound
+  """
+  Rate limit reached
+  Returned when a request cannot be served due to the user or app reached max requests quota.
+  """
+  RateLimitReached
+  """
+  Unauthenticated
+  There was a problem authenticating your request. Check that you are passing valid access token.
+  """
+  Unauthenticated
+  """
+  Unauthorized
+  The request is understood, but it has been refused or access is not allowed.
+  """
+  Unauthorized
+
+  Timeout
+  ServerError
+  Spam
+  RestrictedProfile
+  PayloadTooLarge
+  UnsupportedAttachmentFormat
+
+  """
+  Unknown error
+  Returned when an unexpected error occured.
+  """
+  UnknownError
+}
