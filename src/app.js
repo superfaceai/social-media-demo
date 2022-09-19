@@ -1,6 +1,8 @@
 require('dotenv').config();
 
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
 const passport = require('passport');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
@@ -226,4 +228,12 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-app.listen(3000);
+https
+  .createServer(
+    {
+      key: fs.readFileSync('key.pem'),
+      cert: fs.readFileSync('cert.pem'),
+    },
+    app
+  )
+  .listen(3000);
