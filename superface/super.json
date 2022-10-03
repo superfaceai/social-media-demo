@@ -58,6 +58,9 @@
       "parameters": {
         "accessToken": "$TWITTER_ACCESSTOKEN"
       }
+    },
+    "tiktok": {
+      "security": []
     }
   }
 }

@@ -13,6 +13,7 @@ const expressLayouts = require('express-ejs-layouts');
 const buildFacebookStrategy = require('./auth/facebook/auth');
 const buildTwitterStrategy = require('./auth/twitter/auth');
 const buildLinkedInStrategy = require('./auth/linkedin/auth');
+const buildTiktokStrategy = require('./auth/tiktok/auth');
 const { getProfilesForPublishing } = require('./sf/use-cases');
 const config = require('./config');
 
@@ -49,6 +50,10 @@ if (process.env.TWITTER_CLIENT_ID) {
 
 if (process.env.LINKEDIN_CLIENT_ID) {
   passport.use(buildLinkedInStrategy());
+}
+
+if (process.env.TIKTOK_CLIENT_ID) {
+  passport.use(buildTiktokStrategy());
 }
 
 const app = express();
@@ -206,6 +211,19 @@ app.get(
   '/auth/linkedin/callback',
   passport.authenticate('linkedin', { failureRedirect: '/login' }),
   function (req, res) {
+    res.redirect('/');
+  }
+);
+//#endregion
+
+//#region Tiktok routes
+app.get('/auth/tiktok', passport.authenticate('tiktok'));
+
+app.get(
+  '/auth/tiktok/callback',
+  passport.authenticate('tiktok', { failureRedirect: '/login' }),
+  function (req, res) {
+    // Successful authentication, redirect home.
     res.redirect('/');
   }
 );
