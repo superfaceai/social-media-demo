@@ -11,6 +11,7 @@ const expressLayouts = require('express-ejs-layouts');
 const buildFacebookStrategy = require('./auth/facebook/auth');
 const buildTwitterStrategy = require('./auth/twitter/auth');
 const buildLinkedInStrategy = require('./auth/linkedin/auth');
+const buildYouTubeStrategy = require('./auth/youtube/auth');
 const { getProfilesForPublishing } = require('./sf/use-cases');
 const config = require('./config');
 
@@ -47,6 +48,10 @@ if (process.env.TWITTER_CLIENT_ID) {
 
 if (process.env.LINKEDIN_CLIENT_ID) {
   passport.use(buildLinkedInStrategy());
+}
+
+if (process.env.YOUTUBE_APP_ID) {
+  passport.use(buildYouTubeStrategy());
 }
 
 const app = express();
@@ -203,6 +208,20 @@ app.get(
 app.get(
   '/auth/linkedin/callback',
   passport.authenticate('linkedin', { failureRedirect: '/login' }),
+  function (req, res) {
+    res.redirect('/');
+  }
+);
+//#endregion
+
+//#region YouTube routes
+app.get('/auth/youtube', passport.authenticate('youtube'), function (req, res) {
+  // The request will be redirected to YouTube for authentication, so this
+  // function will not be called.
+});
+app.get(
+  '/auth/youtube/callback',
+  passport.authenticate('youtube', { failureRedirect: '/login' }),
   function (req, res) {
     res.redirect('/');
   }

@@ -3,5 +3,6 @@ module.exports = {
     { id: 'facebook', name: 'Facebook' },
     { id: 'twitter', name: 'Twitter' },
     { id: 'linkedin', name: 'LinkedIn' },
+    { id: 'youtube', name: 'YouTube' },
   ],
 };
