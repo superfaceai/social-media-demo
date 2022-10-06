@@ -6,7 +6,7 @@ module.exports = function buildTiktokStrategy() {
     {
       clientID: process.env.TIKTOK_CLIENT_ID,
       clientSecret: process.env.TIKTOK_CLIENT_SECRET,
-      scope: ['user.info.basic'],
+      scope: ['user.info.basic', 'video.upload'],
       callbackURL: `${process.env.BASE_URL}/auth/tiktok/callback`,
       passReqToCallback: true,
     },
