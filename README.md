@@ -4,10 +4,10 @@ This repository demonstrates publishing posts on Facebook and Instagram social m
 
 ## Setup
 
-- yarn install
-- cp .env.example .env
+- `npm install`
+- `cp .env.example .env`
 - set credentials in .env file (see below)
-- yarn start or yarn start:dev
+- `npm start` or `npm run start:dev`
 - visit http://localhost:3000
 
 ## Social media applications setup
