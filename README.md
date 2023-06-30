@@ -7,7 +7,7 @@ This repository demonstrates publishing posts on Facebook and Instagram social m
 - `npm install`
 - `cp .env.example .env`
 - set credentials in .env file (see below)
-- `npm start` or `npm run start:dev`
+- start server with `npm start`
 - visit http://localhost:3000
 
 ## Social media applications setup

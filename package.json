@@ -9,8 +9,7 @@
     "node": ">=16"
   },
   "scripts": {
-    "start": "node src/app.js",
-    "start:dev": "nodemon src/app.js"
+    "start": "node src/app.js"
   },
   "dependencies": {
     "@superfaceai/one-sdk": "^2.4.2",
@@ -30,7 +29,6 @@
     "passport-oauth2": "^1.7.0"
   },
   "devDependencies": {
-    "nodemon": "^1.14.9",
     "prettier": "^2.8.8"
   }
 }
