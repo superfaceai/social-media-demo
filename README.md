@@ -56,7 +56,7 @@ Instagram Graph API allows to publish posts only to Business accounts linked wit
 
 ## Using the demo app
 
-- start the app `yarn start:dev`
+- start the app `npm start`
 - visit http://localhost:3000
 - click login with Facebook and login with the same Facebook account under witch you created the Facebook application
 - consent with access to above created Facebook page and Instagram account
@@ -71,21 +71,21 @@ Setup [OneSDK](https://github.com/superfaceai/one-sdk-js) and `super.json` confi
 1. Install OneSDK in your project:
 
    ```
-   npm install @superfaceai/one-sdk
+   npm install @superfaceai/one-sdk@2
    ```
 
 2. Install social media profiles with [Superface CLI](https://github.com/superfaceai/cli):
 
    ```
-   npx @superfaceai/cli install social-media/publishing-profiles
-   npx @superfaceai/cli install social-media/publish-post
+   npx @superfaceai/cli@3 install social-media/publishing-profiles
+   npx @superfaceai/cli@3 install social-media/publish-post
    ```
 
 3. Configure providers you want to use (repeat with `instagram` and `twitter` instead of `facebook`):
 
    ```
-   npx @superfaceai/cli configure facebook -p social-media/publishing-profiles
-   npx @superfaceai/cli configure facebook -p social-media/publish-post
+   npx @superfaceai/cli@3 configure facebook -p social-media/publishing-profiles
+   npx @superfaceai/cli@3 configure facebook -p social-media/publish-post
    ```
 
 ### Getting access tokens
